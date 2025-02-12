@@ -149,8 +149,11 @@ resource "aws_instance" "control_plane" {
         ################# INSTALAR ISTIO #################
         curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.21.0 sh -
         cd istio-1.21.0
-        export PATH=$PWD/bin:$PATH
-        istioclt version
+        export PATH="$PATH:$HOME/istio-1.21.0/bin"
+        echo 'export PATH="$PATH:$HOME/istio-1.21.0/bin"' >> ~/.bashrc
+        source ~/.bashrc
+        istioctl x precheck
+        istioctl version
         istioctl install -f demo-profile.yaml -y
         kubectl label namespace default istio-injection=enabled
 

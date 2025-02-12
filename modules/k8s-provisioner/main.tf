@@ -152,6 +152,7 @@ resource "aws_instance" "control_plane" {
         export PATH="$PATH:$HOME/istio-1.21.0/bin"
         echo 'export PATH="$PATH:$HOME/istio-1.21.0/bin"' >> ~/.bashrc
         source ~/.bashrc
+        cd ..
         istioctl x precheck
         istioctl version
         

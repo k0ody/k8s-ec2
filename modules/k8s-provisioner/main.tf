@@ -147,10 +147,11 @@ resource "aws_instance" "control_plane" {
         helm install falco falcosecurity/falco --namespace falco --create-namespace
 
         ################# INSTALAR ISTIO #################
-        curl -L https://istio.io/downloadIstio | sh -
-        # Ajusta o PATH para incluir o binário do istioctl (o diretório pode variar conforme a versão)
-        export PATH=$HOME/istio-$(ls -d $HOME/istio-*/ | head -n1 | xargs basename)/bin:$PATH
-        istioctl install --set profile=demo -y
+        curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.21.0 sh -
+        cd istio-1.21.0
+        export PATH=$PWD/bin:$PATH
+        istioclt version
+        istioctl install -f demo-profile.yaml -y
         kubectl label namespace default istio-injection=enabled
 
         ################# INSTALAR KEDA #################

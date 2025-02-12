@@ -154,7 +154,7 @@ resource "aws_instance" "control_plane" {
         source ~/.bashrc
         istioctl x precheck
         istioctl version
-        istioctl install -f demo-profile.yaml -y
+        istioctl install --set profile=demo -y
         kubectl label namespace default istio-injection=enabled
 
         ################# INSTALAR KEDA #################

@@ -2,7 +2,7 @@
 variable "access_key" {}
 variable "secret_key" {}
 variable "k8s_subnet_cidr" {
-  default = "172.31.0.0/16" // Altere esse valor para o correspondente com sua VPC
+  default = "172.31.32.0/20" // Altere esse valor para o correspondente com sua VPC
 }
 
 provider "aws" {
@@ -27,7 +27,7 @@ module "k8s_provisioner" {
   volume_cp_size        = 14 // Espaço maior para o NFS no Control Plane
   volume_workers_size   = 8
   instance_count        = 3                       // Número de instâncias
-  vpc_id                = "vpc-096357cb7db323b17" // ID da sua VPC
+  vpc_id                = "vpc-02536da71580bccce" // ID da sua VPC
   k8s_subnet_cidr       = var.k8s_subnet_cidr
   k8s_subnet_az         = "us-east-1a" // AZ para a subnet que será criada
   AWS_ACCESS_KEY_ID     = var.access_key

@@ -155,20 +155,10 @@ resource "aws_instance" "control_plane" {
         cd ..
         istioctl x precheck
         istioctl version
+      
         
-        ################# CRIAR O ARQUIVO demo-profile.yaml #################
-        cat <<EOF2 | tee demo-profile.yaml
-        apiVersion: install.istio.io/v1alpha1
-        kind: IstioOperator
-        metadata:
-          namespace: istio-system
-          name: demo-installation
-        spec:
-          profile: demo
-        EOF2
-        
-        istioctl install --set profile=demo -y
-        kubectl label namespace default istio-injection=enabled
+        #istioctl install --set profile=demo -y
+        #kubectl label namespace default istio-injection=enabled
 
         ################# INSTALAR KEDA #################
         helm repo add kedacore https://kedacore.github.io/charts

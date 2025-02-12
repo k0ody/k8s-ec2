@@ -13,7 +13,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "dhiegobastelli-k9s" // Passe o nome do Bucket que você criou para armazenar o state
+    bucket = "dhiegobastelli-k8s" // Passe o nome do Bucket que você criou para armazenar o state
     key    = "terraform/k8s-PICK-state"
     region = "us-east-1"
   }

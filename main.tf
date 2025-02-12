@@ -20,7 +20,7 @@ terraform {
 }
 
 module "k8s_provisioner" {
-  source        = "./modules/k8s_provisioner"
+  source        = "./modules/k8s-provisioner"
   ami           = "ami-04b70fa74e45c3917" // Ubuntu Server 24.04 LTS (HVM), SSD Volume Type
   instance_type = "t3.small"              // A recomendação para k8s é 2vCPU x 2GiB RAM, a mais barata seria uma t3a.small
   // Como é apenas para testes, estou criando uma t2.micro por ser grátis no "free tier"

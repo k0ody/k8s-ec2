@@ -66,11 +66,12 @@ jobs:
       - name: Baixar kubeconfig do Control Plane
         if: github.event.inputs.action == 'apply'
         run: |
-          # Extraia o IP público do control plane
-          CONTROL_PLANE_IP=$(terraform output -raw control_plane_public_ip)
-          echo "Control Plane IP: $CONTROL_PLANE_IP"
-          # Copie o arquivo kubeconfig do control plane para o runner
-          scp -o StrictHostKeyChecking=no -i id_rsa ubuntu@$CONTROL_PLANE_IP:/etc/kubernetes/admin.conf kubeconfig
+            # Extraia o IP público do control plane
+            CONTROL_PLANE_IP=$(terraform output -raw control_plane_public_ip)
+            echo "Control Plane IP: $CONTROL_PLANE_IP"
+            # Use ssh com sudo para capturar o conteúdo do kubeconfig
+            ssh -o StrictHostKeyChecking=no -i id_rsa ubuntu@$CONTROL_PLANE_IP 'sudo cat /etc/kubernetes/admin.conf' > kubeconfig
+        
 
       - name: Upload do kubeconfig como artifact
         if: github.event.inputs.action == 'apply'

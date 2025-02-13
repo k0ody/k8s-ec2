@@ -43,6 +43,7 @@ jobs:
         run: terraform validate -no-color
 
       - name: Terraform Apply or Destroy
+        id: tf
         run: |
           if [ "${{ github.event.inputs.action }}" == "apply" ]; then
             terraform apply --auto-approve
@@ -55,9 +56,25 @@ jobs:
           fi
 
       - name: Print Terraform Outputs
-        if: steps.terraform-apply-or-destroy.outcome != 'failure' && github.event.inputs.action == 'apply'
+        if: steps.tf.outcome != 'failure' && github.event.inputs.action == 'apply'
         run: |
           echo "Control Plane Public IP:"
           terraform output control_plane_public_ip
           echo "Worker Public IPs:"
           terraform output worker_public_ips
+
+      - name: Baixar kubeconfig do Control Plane
+        if: github.event.inputs.action == 'apply'
+        run: |
+          # Extraia o IP público do control plane
+          CONTROL_PLANE_IP=$(terraform output -raw control_plane_public_ip)
+          echo "Control Plane IP: $CONTROL_PLANE_IP"
+          # Copie o arquivo kubeconfig do control plane para o runner
+          scp -o StrictHostKeyChecking=no -i id_rsa ubuntu@$CONTROL_PLANE_IP:/etc/kubernetes/admin.conf kubeconfig
+
+      - name: Upload do kubeconfig como artifact
+        if: github.event.inputs.action == 'apply'
+        uses: actions/upload-artifact@v3
+        with:
+          name: kubeconfig
+          path: kubeconfig

@@ -176,8 +176,9 @@ resource "aws_instance" "control_plane" {
         kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
         ################# INSTALAR KYVERNO #################
-        kubectl create namespace kyverno || true
-        kubectl apply -f https://raw.githubusercontent.com/kyverno/kyverno/main/definitions/release/install.yaml
+        helm repo add kyverno https://kyverno.github.io/kyverno/
+        helm repo update
+        helm install kyverno kyverno/kyverno -n kyverno --create-namespace
 
         ################# CONFIGURAR O NFS #################
         sudo mkdir /mnt/nfs

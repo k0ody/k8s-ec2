@@ -169,7 +169,7 @@ resource "aws_instance" "control_plane" {
         helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
         helm repo add grafana https://grafana.github.io/helm-charts
         helm repo update
-        helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+        #helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
 
         ################# INSTALAR ARGOCD #################
         kubectl create namespace argocd || true
